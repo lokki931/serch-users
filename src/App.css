@@ -11,37 +11,31 @@
   font-size: 20px;
 }
 
-.list {
-  padding: 0;
-  list-style: none;
-  text-align: center;
-}
-
-.listItem {
-  margin-bottom: 20px;
-  font-size: 25px;
-  color: #444;
-  font-weight: 300;
-}
-
 table {
   width: 100%;
-  margin: 50px 0px;
+  margin: 50px 0px 20px;
   border-spacing: 15px;
   color: #444;
 }
 
 tr {
   margin-bottom: 20px;
+
 }
 
 th {
-  width: 33.333%;
+  width: 30%;
   text-align: left;
   font-size: 20px;
+  border: 2px solid #333;
 }
 
 td {
-  width: 33.333%;
+  width: 30%;
   font-size: 20px;
+  border: 2px solid #333;
+}
+
+.id {
+  width: 10%;
 }

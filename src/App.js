@@ -4,11 +4,13 @@ import './App.css';
 import Table from './components/Table';
 
 function App() {
+  const pages = 10;
   const [query, setQuery] = useState("");
+  const [perPage, setPerPage] = useState(pages);
   const keys = ["first_name", "last_name", "email"];
   const search = (data) => {
     return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query.toLowerCase()))
+      keys.some((key) => item[key].toLowerCase().includes(query))
     );
   };
   return (
@@ -18,7 +20,22 @@ function App() {
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value.toLowerCase())}
       />
-      {<Table data={search(Users)} />}
+      {search(Users).length > 0 ?
+        <Table data={search(Users).splice(0, perPage)} /> :
+        <p>nothing found</p>}
+      {search(Users).length > perPage ?
+        <div style={{ textAlign: 'center' }}>
+          <button
+            onClick={() => {
+              setPerPage(perPage + pages)
+            }}
+          >
+            load More
+          </button>
+        </div>
+        : null
+      }
+
     </div>
   );
 }

@@ -4,17 +4,28 @@ import './App.css';
 import Table from './components/Table';
 
 function App() {
-  const pages = 10;
+  const pages = 15;
   const [users, setUsers] = useState([]);
   const [query, setQuery] = useState("");
   const [perPage, setPerPage] = useState(pages);
+  const [total, setTotal] = useState(0);
   const keys = ["first_name", "last_name", "email"];
 
   useEffect(() => {
-    axios.get('http://localhost:3001/users')
-      .then(res => setUsers(res.data))
+    axios.get('http://localhost:3001/users', {
+      params: {
+        _limit: perPage,
+        first_name_like: query,
+        last_name_like: query,
+        email_like: query,
+      }
+    })
+      .then(res => {
+        setTotal(res.headers['x-total-count']);
+        setUsers(res.data)
+      })
       .catch(e => console.log(e));
-  }, [])
+  }, [query, perPage])
 
 
   const search = (data) => {
@@ -29,10 +40,13 @@ function App() {
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value.toLowerCase())}
       />
-      {search(users).length > 0 ?
-        <Table data={search(users).splice(0, perPage)} /> :
+      {users.length > 0 ?
+        <Table data={users} /> :
         <p>nothing found</p>}
-      {search(users).length > perPage ?
+      {/* {search(users).length > 0 ?
+        <Table data={search(users).splice(0, perPage)} /> :
+        <p>nothing found</p>} */}
+      {users.length >= perPage && users.length < total ?
         <div style={{ textAlign: 'center' }}>
           <button
             onClick={() => {
